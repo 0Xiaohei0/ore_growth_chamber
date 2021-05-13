@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "oregrowthchamber:block/ore_growth_chamber"
+  }
+}
