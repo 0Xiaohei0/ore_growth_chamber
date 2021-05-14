@@ -9,11 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
+import xiaohei.oregrowthchamber.GUI.ExampleGuiDescription;
 
-public class mBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory {
+public class mBlockEntity extends BlockEntity implements ImplementedInventory, NamedScreenHandlerFactory {
 
    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(2, ItemStack.EMPTY);
 
@@ -26,21 +28,22 @@ public class mBlockEntity extends BlockEntity implements NamedScreenHandlerFacto
       return items;
    }
 
-   // These Methods are from the NamedScreenHandlerFactory Interface
-   // createMenu creates the ScreenHandler itself
-   // getDisplayName will Provide its name which is normally shown at the top
-
    @Override
-   public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-      // We provide *this* to the screenHandler as our class Implements Inventory
-      // Only the Server has the Inventory at the start, this will be synced to the
-      // client in the ScreenHandler
-      return new BoxScreenHandler(syncId, playerInventory, this);
+   public Text getDisplayName() {
+      // Using the block name as the screen title
+      return new TranslatableText(getCachedState().getBlock().getTranslationKey());
    }
 
    @Override
-   public Text getDisplayName() {
-      return new TranslatableText(getCachedState().getBlock().getTranslationKey());
+   public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
+      return new ExampleGuiDescription(syncId, inventory, ScreenHandlerContext.create(world, pos));
+   }
+
+   @Override
+   public boolean canPlayerUse(PlayerEntity player) {
+      System.out.println("can use 2");
+      return true;
+      // return pos.isWithinDistance(player.getBlockPos(), 4.5);
    }
 
    @Override

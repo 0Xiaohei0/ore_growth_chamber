@@ -1,14 +1,10 @@
 package xiaohei.oregrowthchamber;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.BlockView;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -37,21 +33,13 @@ public class OreGrowthChamberBlock extends Block implements BlockEntityProvider 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
             BlockHitResult hit) {
-        if (!world.isClient) {
-            // This will call the createScreenHandlerFactory method from BlockWithEntity,
-            // which will return our blockEntity casted to
-            // a namedScreenHandlerFactory. If your block class does not extend
-            // BlockWithEntity, it needs to implement createScreenHandlerFactory.
-            NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
-
-            if (screenHandlerFactory != null) {
-                // With this call the server will request the client to open the appropriate
-                // Screenhandler
-                player.openHandledScreen(screenHandlerFactory);
-            }
-        }
+        // You need a Block.createScreenHandlerFactory implementation that delegates to
+        // the block entity,
+        // such as the one from BlockWithEntity
+        player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
         return ActionResult.SUCCESS;
     }
+    // player.sendMessage(new LiteralText("Hello, world!"), false);
 
     // This method will drop all items onto the ground when the block is broken
     @Override

@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "xiaohei.oregrowthchamber.OreGrowthChamber"
+    ],
+    "client": [
+      "xiaohei.oregrowthchamber.Client"
     ]
   },
   "mixins": [
